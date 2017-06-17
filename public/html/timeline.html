@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=0.5,minimum-scale=0.5,maximum-scale=0.5,user-scalable=yes"/>
+    <meta content="email=no" name="format-detection"/>
+    <meta content="telephone=no" name="format-detection"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta http-equiv="pragma" content="no-cach">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <link rel="apple-touch-icon-precomposed">
+    <title>时光轴</title>
+    <link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
+    <script src="../javascripts/jquery-1.7.js"></script>
+    <script src="../javascripts/jqtouch-jquery.js"></script>
+    <script src="../javascripts/jqtouch.js"></script>
+    <script src="../javascripts/common.js"></script>
+    <script>
+        $(window).bind("orientationchange", function () {
+            if (window.orientation == 0 || window.orientation == 180) {//竖屏
+                setTimePanel(window.screen.availHeight);
+            } else if (window.orientation == 90 || window.orientation == -90) {//横屏
+                setTimePanel(window.screen.availWidth);
+            }
+        });
+        function setTimePanel(size) {
+            var h = size * 2 - 10 - 80;// 减margin，toolbar
+            if (size < 400) {//320
+                h -= 40;// 减 statusbar
+            }
+            $("#timePanel").height(h);
+        }
+        function openLogMenu() {
+            $("#logMenu").css({height: 120});
+            $("#timeline > .mask").fadeIn(200);
+        }
+        function closeLogMenu() {
+            $("#logMenu").css({height: 0 });
+            $("#timeline > .mask").fadeOut(200);
+        }
+        $(function () {
+            setTimePanel(window.screen.availHeight);
+            $("#menuBtn").bind("touchstart", openLogMenu);
+            $("#timeline > .mask").bind("touchstart", closeLogMenu);
+
+            $("#chart").floatmove({
+                tap: function ($this) {
+                    if ($this.attr("data-x")) {
+                        $this.animateRun($this, $this.attr("data-x"), $this.attr("data-y"));
+                        $this.removeAttr("data-x");
+                        $this.removeAttr("data-y");
+                        $("#chartbox").hide();
+                        $("#chartbox .panel").removeClass("act");
+                        return true;
+                    } else {
+                        $this.attr("data-x", $this.css("left"));
+                        $this.attr("data-y", $this.css("top"));
+                        $this.animateRun($this, $this.SCREEN_W - $this.width() - 20, 10);
+                        $("#chartbox").show();
+                        $("#chartbox .panel").addClass("act");
+                        return true;
+                    }
+                },
+                touchend: function ($this) {
+                    if ($this.attr("data-x")) {
+                        $this.animateRun($this, $this.attr("data-x"), $this.attr("data-y"));
+                        $this.removeAttr("data-x");
+                        $this.removeAttr("data-y");
+                        $("#chartbox").hide();
+                        $("#chartbox .panel").removeClass("act");
+                        return true;
+                    }
+                    return false;
+                }
+            });
+            $("#chartbox .close").bind("touchstart", function () {
+                var $this = $("#chart");
+                $this.animate({left: $this.attr("data-x"), top: $this.attr("data-y")}, 120);
+                $this.removeAttr("data-x");
+                $this.removeAttr("data-y");
+                $("#chartbox").hide();
+                $("#chartbox .panel").removeClass("act");
+            });
+
+
+        });
+
+    </script>
+</head>
+<body>
+<div id="timeline" class="main">
+    <div id="chart"></div>
+    <div id="chartbox">
+        <div class="ctrl">
+            <div class="close">×</div>
+            <div class="mask"></div>
+        </div>
+        <div class="panel_frame">
+            <div class="panel">
+                <div class="chart_panel">
+                    <div class="left ">
+                        <div class="bubble gg">
+                            你是谁啊？？我问你是谁啊？你到底说不说啊？你是谁啊？？我问你是谁啊？你到底说不说啊？你是谁啊？？我问你是谁啊？你到底说不说啊？
+                        </div>
+                    </div>
+                    <div class="right ">
+                        <div class="bubble mm">
+                            你是谁啊？？我问你是谁啊？你到底说不说啊？你是谁啊？？我问你是谁啊？你到底说不说啊？你是谁啊？？我问你是谁啊？你到底说不说啊？
+                        </div>
+                    </div>
+                </div>
+                <div class="input_panel">
+                    <textarea id="chartMsg"></textarea>
+
+                    <div id="sendMsg" class="btn">发送</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="toolbar">
+        <div class="tlbutton j_back"><span class="tool_back"></span></div>
+        <h2>时光轴</h2>
+
+        <div id="menuBtn" class="trbutton"><span class="tool_text">记录点滴</span></div>
+        <ul id="logMenu" class="menu">
+            <li>写日记</li>
+            <li>传照片</li>
+            <li>聊天</li>
+            <li>想念</li>
+            <li>打电话</li>
+        </ul>
+    </div>
+    <div class="mask"></div>
+    <div id="timePanel" class="scroll_frame">
+        <div class="area">
+            <div class="line"></div>
+            <div id="diarys" class="diarys">
+                <div class="day">
+                    <span class="date">2014-12-12</span>
+
+                    <div class="left">
+                        <div class="timecard ">
+                            <p class="time">16:23:50</p>
+                            <img src="../images/IMG_20140315_174246.jpg">
+
+                            <p>
+                                和谐恋爱，从你做起。我和我男朋友谈了大概两三个月。感情还不错，至少我觉得是这样。虽然有些小打小闹，但也不是什么大问题。我这个人脾气很好，待人接物都很温柔。对他更是掏心掏肺，像我朋友说的，你简直把心都挖出来给他看了，回来之后，我们俩见一次面，我发现我俩在一起
+                                的时候关机，觉得有问题。</p>
+
+                        </div>
+                        <div class="timecard ">
+                            <p class="time">16:23:50</p>
+
+                            <p>
+                                和谐恋爱，从你做起。我和我男朋友谈了大概两三个月。感情还不错，至少我觉得是这样。虽然有些小打小闹，但也不是什么大问题。我这个人脾气很好，待人接物都很温柔。对他更是掏心掏肺，像我朋友说的，你简直把心都挖出来给他看了，回来之后，我们俩见一次面，我发现我俩在一起
+                                的时候关机，觉得有问题。</p>
+
+                        </div>
+                    </div>
+                    <div class="right">
+                        <div class="timecard ">
+                            <p class="time">16:23:50</p>
+
+                            <p>
+                                和谐恋爱，从你做起。我和我男朋友谈了大概两三个月。感情还不错，至少我觉得是这样。虽然有些小打小闹，但也不是什么大问题。我这个人脾气很好，待人接物都很温柔。对他更是掏心掏肺，像我朋友说的，你简直把心都挖出来给他看了，回来之后，我们俩见一次面，我发现我俩在一起
+                                的时候关机，觉得有问题。</p>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="day">
+                    <span class="date">2014-12-12</span>
+
+                    <div class="left">
+
+                        <div class="timecard ">
+                            <p class="time">16:23:50</p>
+
+                            <p>
+                                和谐恋爱，从你做起。我和我男朋友谈了大概两三个月。感情还不错，至少我觉得是这样。虽然有些小打小闹，但也不是什么大问题。我这个人脾气很好，待人接物都很温柔。对他更是掏心掏肺，像我朋友说的，你简直把心都挖出来给他看了，回来之后，我们俩见一次面，我发现我俩在一起
+                                的时候关机，觉得有问题。</p>
+
+                        </div>
+                        <div class="timecard ">
+                            <p class="time">16:23:50</p>
+
+                            <p>
+                                和谐恋爱，从你做起。我和我男朋友谈了大概两三个月。感情还不错，至少我觉得是这样。虽然有些小打小闹，但也不是什么大问题。我这个人脾气很好，待人接物都很温柔。对他更是掏心掏肺，像我朋友说的，你简直把心都挖出来给他看了，回来之后，我们俩见一次面，我发现我俩在一起
+                                的时候关机，觉得有问题。</p>
+
+                        </div>
+                    </div>
+                    <div class="right">
+                        <div class="timecard ">
+                            <p class="time">16:23:50</p>
+                            <img src="../images/IMG_20140315_174246.jpg">
+
+                            <p>
+                                和谐恋爱，从你做起。我和我男朋友谈了大概两三个月。感情还不错，至少我觉得是这样。虽然有些小打小闹，但也不是什么大问题。我这个人脾气很好，待人接物都很温柔。对他更是掏心掏肺，像我朋友说的，你简直把心都挖出来给他看了，回来之后，我们俩见一次面，我发现我俩在一起
+                                的时候关机，觉得有问题。</p>
+
+                        </div>
+                        <div class="timecard ">
+                            <p class="time">16:23:50</p>
+
+                            <p>
+                                和谐恋爱，从你做起。我和我男朋友谈了大概两三个月。感情还不错，至少我觉得是这样。虽然有些小打小闹，但也不是什么大问题。我这个人脾气很好，待人接物都很温柔。对他更是掏心掏肺，像我朋友说的，你简直把心都挖出来给他看了，回来之后，我们俩见一次面，我发现我俩在一起
+                                的时候关机，觉得有问题。</p>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=0.5,minimum-scale=0.5,maximum-scale=0.5,user-scalable=yes"/>
+    <meta content="email=no" name="format-detection"/>
+    <meta content="telephone=no" name="format-detection"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <link rel="apple-touch-icon-precomposed" href="/images/icon.jpg">
+    <link rel="apple-touch-startup-image" media="(device-width: 320px) and (-webkit-device-pixel-ratio: 2)"
+          href="/images/startup.jpg">
+    <meta http-equiv="pragma" content="no-cach">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <title>花林点滴</title>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/jqtouch.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/javascripts/jquery-1.7.js"></script>
+    <script src="/javascripts/jqtouch-jquery.js"></script>
+    <script src="/javascripts/jqtouch.js"></script>
+    <script src="/javascripts/common.js"></script>
+    <script src="/javascripts/iscroll4.js"></script>
+    <script src="/javascripts/h5_make_thumb/binaryajax.js"></script>
+    <script src="/javascripts/h5_make_thumb/exif.js"></script>
+    <script src="/javascripts/h5_make_thumb/megapix-image.js"></script>
+    <script src="/javascripts/h5_make_thumb/jquery.make-thumb.js"></script>
+    <script src="/javascripts/loveus(iscroll).js"></script>
+    <script src="/javascripts/file-upload.js"></script>
+    <!--<script src="http://weinre.aws.af.cm/target/target-script-min.js"></script>-->
+</head>
+<body>
+
+<div id="login" class="main">
+    <div class="input_panel">
+        <div class="input"><input id="username" type="text" placeholder="Input UserName Here"></div>
+        <div class="input"><input id="password" type="password" placeholder="Input Password Here"></div>
+        <div id="loginBtn" class="btn">登录</div>
+    </div>
+</div>
+<div id="timeline" class="main">
+    <div id="chart"></div>
+    <div id="chartbox">
+        <div class="ctrl">
+            <div class="close">×</div>
+            <div class="mask"></div>
+        </div>
+        <div class="panel_frame">
+            <div class="panel">
+                <div id="chartPanel" class="chart_panel">
+                    <div class="area">
+                        <div class="pullDown">
+                            <span class="pullDownLabel">下拉查看更多消息</span>
+                        </div>
+                        <div class="list">
+                        </div>
+                    </div>
+                </div>
+                <div class="input_panel">
+                    <textarea id="chartMsg"></textarea>
+
+                    <div id="sendMsg" class="btn">发送</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="line"></div>
+    <div class="toolbar">
+        <div class="tlbutton j_back"><span class="tool_back"></span></div>
+        <h2>时光轴</h2>
+
+        <div id="menuBtn" class="trbutton"><span class="tool_text">LOVE</span></div>
+    </div>
+    <ul id="logMenu" class="menu">
+        <li><a id="diaryBtn" href="#diary" class="slideleft"><i class="diary"></i>记点滴</a></li>
+        <li><a href="#" class=""><i class="photo"></i>照片</a></li>
+        <li><a id="chartBtn" href="#" class=""><i class="chart"></i>聊天</a></li>
+        <li><a href="#" class=""><i class="miss"></i>想念</a></li>
+        <li><a id="telephone" href=""><i class="phone"></i>打电话</a></li>
+    </ul>
+    <div class="mask"></div>
+    <div class="load"></div>
+    <div id="timePanel" class="scroll_frame">
+        <div class="area">
+            <div class="pullDown">
+                <span class="pullDownIcon"></span><span class="pullDownLabel">下拉刷新</span>
+            </div>
+            <div id="diarys" class="diarys">
+            </div>
+            <!--<div class="more">正在加载</div>-->
+            <div class="pullUp">
+                <span class="pullUpIcon"></span><span class="pullUpLabel">加载更多</span>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="diary" class="main">
+    <div class="toolbar">
+        <a href="#timeline" class="tlbutton back"><span class="tool_text">取消</span></a>
+
+        <h2>记点滴</h2>
+
+        <div id="sendDiary" class="trbutton"><span class="tool_text">发表</span></div>
+    </div>
+    <div class="input_panel">
+        <textarea id="diaryContent" rows="3" placeholder="开始记录点滴吧..."></textarea>
+
+    </div>
+    <div class="input_panel">
+        <div class="photoarea">
+            <div id="photos"></div>
+            <div id="addPhoto" class="add">
+                <input id="photofile" name="photo" type="file" multiple="multiple" accept="image/*" max="5">
+            </div>
+        </div>
+    </div>
+    <div class="nettype">手机图片较大，记得要在wifi连接下上传图片哦！</div>
+</div>
+</body>
+</html>

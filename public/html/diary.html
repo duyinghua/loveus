@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=0.5,minimum-scale=0.5,maximum-scale=0.5,user-scalable=yes"/>
+    <meta content="email=no" name="format-detection"/>
+    <meta content="telephone=no" name="format-detection"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta http-equiv="pragma" content="no-cach">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <link rel="apple-touch-icon-precomposed">
+    <title>写日志</title>
+    <link rel="stylesheet" type="text/css" href="../stylesheets/jqtouch.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
+    <script src="../javascripts/jquery-1.7.js"></script>
+    <script src="../javascripts/jqtouch-jquery.js"></script>
+    <script src="../javascripts/jqtouch.js"></script>
+    <script src="../javascripts/common.js"></script>
+    <script src="../javascripts/file-upload.js"></script>
+    <script>
+        function photoUploader() {
+            var fileconfig = {
+                fileInput: "photofile",
+                url: "http://192.168.0.182:3000/uploads",
+                onSelect: function (files) {
+                    var $photos = $("#photos");
+                    if (files.length) {
+                        $photos.empty();
+                        for (var i = 0; i < files.length; i++) {
+                            var file = files[i];
+                            var reader = new FileReader();
+                            reader.readAsDataURL(file);
+                            var $photo = $('<div class="photo" id="p_' + i + '"><span>加载中</span><div class="progress"><i></i></div></div>');
+                            $photos.append($photo);
+                            (function (po) {
+                                reader.onprogress = function (e) {
+                                    po.children("span").html(parseInt((e.loaded / e.total) * 100) + "%");
+                                };
+                                reader.onload = function (e) {
+                                    po.css("backgroundImage", "url(" + e.target.result + ")").children("span").html("");
+                                };
+
+                            })($photo);
+                        }
+                    }
+                },
+                onProgress: function (file, e) {
+                    var percent = parseInt(e.loaded / e.total * 100) + '%';
+                    $("#p_" + file.index + " i").width(percent);
+                },
+                onSuccess: function (file) {
+                    $("#p_" + file.index).addClass("uploaded").empty();
+                }
+            };
+            return new FileUpload(fileconfig);
+        }
+        $(function () {
+            var fileuploader = photoUploader();
+            $("#sendDiary").bind("touchstart", function () {
+                fileuploader.uploadFile();
+            });
+        })
+    </script>
+</head>
+<body>
+<div id="diary" class="main">
+    <div class="toolbar">
+        <div class="tlbutton j_back"><span class="tool_text">取消</span></div>
+        <h2>写日记</h2>
+
+        <div id="sendDiary" class="trbutton"><span class="tool_text">发表</span></div>
+    </div>
+    <div class="input_panel">
+        <textarea rows="3" placeholder="开始记录点滴吧..."></textarea>
+
+    </div>
+    <div class="input_panel">
+        <div class="photoarea">
+            <div id="photos"></div>
+            <div id="addPhoto" class="add">
+                <input id="photofile" name="photo" type="file" multiple="multiple" accept="image/*" max="5">
+            </div>
+        </div>
+    </div>
+    <div class="nettype">手机图片较大，记得要在wifi连接下上传图片哦！</div>
+</div>
+</body>
+</html>
